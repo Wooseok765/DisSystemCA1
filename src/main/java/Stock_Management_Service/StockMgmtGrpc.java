@@ -59,36 +59,36 @@ public final class StockMgmtGrpc {
      return getStockCheckMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<Stock_Management_Service.NewItemStatus,
-      Stock_Management_Service.ItemStatus> getStockAdjustMethod;
+  private static volatile io.grpc.MethodDescriptor<Stock_Management_Service.Items,
+      Stock_Management_Service.TotalPrice> getBasketPriceMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "StockAdjust",
-      requestType = Stock_Management_Service.NewItemStatus.class,
-      responseType = Stock_Management_Service.ItemStatus.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<Stock_Management_Service.NewItemStatus,
-      Stock_Management_Service.ItemStatus> getStockAdjustMethod() {
-    io.grpc.MethodDescriptor<Stock_Management_Service.NewItemStatus, Stock_Management_Service.ItemStatus> getStockAdjustMethod;
-    if ((getStockAdjustMethod = StockMgmtGrpc.getStockAdjustMethod) == null) {
+      fullMethodName = SERVICE_NAME + '/' + "BasketPrice",
+      requestType = Stock_Management_Service.Items.class,
+      responseType = Stock_Management_Service.TotalPrice.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+  public static io.grpc.MethodDescriptor<Stock_Management_Service.Items,
+      Stock_Management_Service.TotalPrice> getBasketPriceMethod() {
+    io.grpc.MethodDescriptor<Stock_Management_Service.Items, Stock_Management_Service.TotalPrice> getBasketPriceMethod;
+    if ((getBasketPriceMethod = StockMgmtGrpc.getBasketPriceMethod) == null) {
       synchronized (StockMgmtGrpc.class) {
-        if ((getStockAdjustMethod = StockMgmtGrpc.getStockAdjustMethod) == null) {
-          StockMgmtGrpc.getStockAdjustMethod = getStockAdjustMethod = 
-              io.grpc.MethodDescriptor.<Stock_Management_Service.NewItemStatus, Stock_Management_Service.ItemStatus>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+        if ((getBasketPriceMethod = StockMgmtGrpc.getBasketPriceMethod) == null) {
+          StockMgmtGrpc.getBasketPriceMethod = getBasketPriceMethod = 
+              io.grpc.MethodDescriptor.<Stock_Management_Service.Items, Stock_Management_Service.TotalPrice>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
               .setFullMethodName(generateFullMethodName(
-                  "service1.StockMgmt", "StockAdjust"))
+                  "service1.StockMgmt", "BasketPrice"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  Stock_Management_Service.NewItemStatus.getDefaultInstance()))
+                  Stock_Management_Service.Items.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  Stock_Management_Service.ItemStatus.getDefaultInstance()))
-                  .setSchemaDescriptor(new StockMgmtMethodDescriptorSupplier("StockAdjust"))
+                  Stock_Management_Service.TotalPrice.getDefaultInstance()))
+                  .setSchemaDescriptor(new StockMgmtMethodDescriptorSupplier("BasketPrice"))
                   .build();
           }
         }
      }
-     return getStockAdjustMethod;
+     return getBasketPriceMethod;
   }
 
   /**
@@ -127,9 +127,9 @@ public final class StockMgmtGrpc {
 
     /**
      */
-    public void stockAdjust(Stock_Management_Service.NewItemStatus request,
-        io.grpc.stub.StreamObserver<Stock_Management_Service.ItemStatus> responseObserver) {
-      asyncUnimplementedUnaryCall(getStockAdjustMethod(), responseObserver);
+    public io.grpc.stub.StreamObserver<Stock_Management_Service.Items> basketPrice(
+        io.grpc.stub.StreamObserver<Stock_Management_Service.TotalPrice> responseObserver) {
+      return asyncUnimplementedStreamingCall(getBasketPriceMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -142,12 +142,12 @@ public final class StockMgmtGrpc {
                 Stock_Management_Service.ItemStatus>(
                   this, METHODID_STOCK_CHECK)))
           .addMethod(
-            getStockAdjustMethod(),
-            asyncUnaryCall(
+            getBasketPriceMethod(),
+            asyncClientStreamingCall(
               new MethodHandlers<
-                Stock_Management_Service.NewItemStatus,
-                Stock_Management_Service.ItemStatus>(
-                  this, METHODID_STOCK_ADJUST)))
+                Stock_Management_Service.Items,
+                Stock_Management_Service.TotalPrice>(
+                  this, METHODID_BASKET_PRICE)))
           .build();
     }
   }
@@ -180,10 +180,10 @@ public final class StockMgmtGrpc {
 
     /**
      */
-    public void stockAdjust(Stock_Management_Service.NewItemStatus request,
-        io.grpc.stub.StreamObserver<Stock_Management_Service.ItemStatus> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getStockAdjustMethod(), getCallOptions()), request, responseObserver);
+    public io.grpc.stub.StreamObserver<Stock_Management_Service.Items> basketPrice(
+        io.grpc.stub.StreamObserver<Stock_Management_Service.TotalPrice> responseObserver) {
+      return asyncClientStreamingCall(
+          getChannel().newCall(getBasketPriceMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -210,13 +210,6 @@ public final class StockMgmtGrpc {
     public Stock_Management_Service.ItemStatus stockCheck(Stock_Management_Service.ItemName request) {
       return blockingUnaryCall(
           getChannel(), getStockCheckMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public Stock_Management_Service.ItemStatus stockAdjust(Stock_Management_Service.NewItemStatus request) {
-      return blockingUnaryCall(
-          getChannel(), getStockAdjustMethod(), getCallOptions(), request);
     }
   }
 
@@ -245,18 +238,10 @@ public final class StockMgmtGrpc {
       return futureUnaryCall(
           getChannel().newCall(getStockCheckMethod(), getCallOptions()), request);
     }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<Stock_Management_Service.ItemStatus> stockAdjust(
-        Stock_Management_Service.NewItemStatus request) {
-      return futureUnaryCall(
-          getChannel().newCall(getStockAdjustMethod(), getCallOptions()), request);
-    }
   }
 
   private static final int METHODID_STOCK_CHECK = 0;
-  private static final int METHODID_STOCK_ADJUST = 1;
+  private static final int METHODID_BASKET_PRICE = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -279,10 +264,6 @@ public final class StockMgmtGrpc {
           serviceImpl.stockCheck((Stock_Management_Service.ItemName) request,
               (io.grpc.stub.StreamObserver<Stock_Management_Service.ItemStatus>) responseObserver);
           break;
-        case METHODID_STOCK_ADJUST:
-          serviceImpl.stockAdjust((Stock_Management_Service.NewItemStatus) request,
-              (io.grpc.stub.StreamObserver<Stock_Management_Service.ItemStatus>) responseObserver);
-          break;
         default:
           throw new AssertionError();
       }
@@ -293,6 +274,9 @@ public final class StockMgmtGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_BASKET_PRICE:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.basketPrice(
+              (io.grpc.stub.StreamObserver<Stock_Management_Service.TotalPrice>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -345,7 +329,7 @@ public final class StockMgmtGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new StockMgmtFileDescriptorSupplier())
               .addMethod(getStockCheckMethod())
-              .addMethod(getStockAdjustMethod())
+              .addMethod(getBasketPriceMethod())
               .build();
         }
       }

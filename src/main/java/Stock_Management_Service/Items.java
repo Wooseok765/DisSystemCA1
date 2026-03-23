@@ -4,22 +4,20 @@
 package Stock_Management_Service;
 
 /**
- * Protobuf type {@code service1.NewItemStatus}
+ * Protobuf type {@code service1.Items}
  */
-public  final class NewItemStatus extends
+public  final class Items extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:service1.NewItemStatus)
-    NewItemStatusOrBuilder {
+    // @@protoc_insertion_point(message_implements:service1.Items)
+    ItemsOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use NewItemStatus.newBuilder() to construct.
-  private NewItemStatus(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use Items.newBuilder() to construct.
+  private Items(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private NewItemStatus() {
+  private Items() {
     itemName_ = "";
-    quantity_ = 0;
-    expiryDate_ = "";
-    location_ = "";
+    price_ = 0D;
   }
 
   @java.lang.Override
@@ -27,7 +25,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private NewItemStatus(
+  private Items(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -52,21 +50,9 @@ private static final long serialVersionUID = 0L;
             itemName_ = s;
             break;
           }
-          case 16: {
+          case 17: {
 
-            quantity_ = input.readInt32();
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            expiryDate_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            location_ = s;
+            price_ = input.readDouble();
             break;
           }
           default: {
@@ -90,15 +76,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return Stock_Management_Service.CA1.internal_static_service1_NewItemStatus_descriptor;
+    return Stock_Management_Service.CA1.internal_static_service1_Items_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return Stock_Management_Service.CA1.internal_static_service1_NewItemStatus_fieldAccessorTable
+    return Stock_Management_Service.CA1.internal_static_service1_Items_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            Stock_Management_Service.NewItemStatus.class, Stock_Management_Service.NewItemStatus.Builder.class);
+            Stock_Management_Service.Items.class, Stock_Management_Service.Items.Builder.class);
   }
 
   public static final int ITEM_NAME_FIELD_NUMBER = 1;
@@ -135,81 +121,13 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int QUANTITY_FIELD_NUMBER = 2;
-  private int quantity_;
+  public static final int PRICE_FIELD_NUMBER = 2;
+  private double price_;
   /**
-   * <code>int32 quantity = 2;</code>
+   * <code>double price = 2;</code>
    */
-  public int getQuantity() {
-    return quantity_;
-  }
-
-  public static final int EXPIRY_DATE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object expiryDate_;
-  /**
-   * <code>string expiry_date = 3;</code>
-   */
-  public java.lang.String getExpiryDate() {
-    java.lang.Object ref = expiryDate_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      expiryDate_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string expiry_date = 3;</code>
-   */
-  public com.google.protobuf.ByteString
-      getExpiryDateBytes() {
-    java.lang.Object ref = expiryDate_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      expiryDate_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int LOCATION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object location_;
-  /**
-   * <code>string location = 4;</code>
-   */
-  public java.lang.String getLocation() {
-    java.lang.Object ref = location_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      location_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string location = 4;</code>
-   */
-  public com.google.protobuf.ByteString
-      getLocationBytes() {
-    java.lang.Object ref = location_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      location_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public double getPrice() {
+    return price_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -229,14 +147,8 @@ private static final long serialVersionUID = 0L;
     if (!getItemNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, itemName_);
     }
-    if (quantity_ != 0) {
-      output.writeInt32(2, quantity_);
-    }
-    if (!getExpiryDateBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, expiryDate_);
-    }
-    if (!getLocationBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, location_);
+    if (price_ != 0D) {
+      output.writeDouble(2, price_);
     }
     unknownFields.writeTo(output);
   }
@@ -250,15 +162,9 @@ private static final long serialVersionUID = 0L;
     if (!getItemNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, itemName_);
     }
-    if (quantity_ != 0) {
+    if (price_ != 0D) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, quantity_);
-    }
-    if (!getExpiryDateBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, expiryDate_);
-    }
-    if (!getLocationBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, location_);
+        .computeDoubleSize(2, price_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -270,20 +176,18 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof Stock_Management_Service.NewItemStatus)) {
+    if (!(obj instanceof Stock_Management_Service.Items)) {
       return super.equals(obj);
     }
-    Stock_Management_Service.NewItemStatus other = (Stock_Management_Service.NewItemStatus) obj;
+    Stock_Management_Service.Items other = (Stock_Management_Service.Items) obj;
 
     boolean result = true;
     result = result && getItemName()
         .equals(other.getItemName());
-    result = result && (getQuantity()
-        == other.getQuantity());
-    result = result && getExpiryDate()
-        .equals(other.getExpiryDate());
-    result = result && getLocation()
-        .equals(other.getLocation());
+    result = result && (
+        java.lang.Double.doubleToLongBits(getPrice())
+        == java.lang.Double.doubleToLongBits(
+            other.getPrice()));
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -297,80 +201,77 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ITEM_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getItemName().hashCode();
-    hash = (37 * hash) + QUANTITY_FIELD_NUMBER;
-    hash = (53 * hash) + getQuantity();
-    hash = (37 * hash) + EXPIRY_DATE_FIELD_NUMBER;
-    hash = (53 * hash) + getExpiryDate().hashCode();
-    hash = (37 * hash) + LOCATION_FIELD_NUMBER;
-    hash = (53 * hash) + getLocation().hashCode();
+    hash = (37 * hash) + PRICE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        java.lang.Double.doubleToLongBits(getPrice()));
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(byte[] data)
+  public static Stock_Management_Service.Items parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(java.io.InputStream input)
+  public static Stock_Management_Service.Items parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Stock_Management_Service.NewItemStatus parseDelimitedFrom(java.io.InputStream input)
+  public static Stock_Management_Service.Items parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static Stock_Management_Service.NewItemStatus parseDelimitedFrom(
+  public static Stock_Management_Service.Items parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static Stock_Management_Service.NewItemStatus parseFrom(
+  public static Stock_Management_Service.Items parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -383,7 +284,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(Stock_Management_Service.NewItemStatus prototype) {
+  public static Builder newBuilder(Stock_Management_Service.Items prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -399,26 +300,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code service1.NewItemStatus}
+   * Protobuf type {@code service1.Items}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:service1.NewItemStatus)
-      Stock_Management_Service.NewItemStatusOrBuilder {
+      // @@protoc_insertion_point(builder_implements:service1.Items)
+      Stock_Management_Service.ItemsOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return Stock_Management_Service.CA1.internal_static_service1_NewItemStatus_descriptor;
+      return Stock_Management_Service.CA1.internal_static_service1_Items_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return Stock_Management_Service.CA1.internal_static_service1_NewItemStatus_fieldAccessorTable
+      return Stock_Management_Service.CA1.internal_static_service1_Items_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              Stock_Management_Service.NewItemStatus.class, Stock_Management_Service.NewItemStatus.Builder.class);
+              Stock_Management_Service.Items.class, Stock_Management_Service.Items.Builder.class);
     }
 
-    // Construct using Stock_Management_Service.NewItemStatus.newBuilder()
+    // Construct using Stock_Management_Service.Items.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -438,11 +339,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       itemName_ = "";
 
-      quantity_ = 0;
-
-      expiryDate_ = "";
-
-      location_ = "";
+      price_ = 0D;
 
       return this;
     }
@@ -450,17 +347,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return Stock_Management_Service.CA1.internal_static_service1_NewItemStatus_descriptor;
+      return Stock_Management_Service.CA1.internal_static_service1_Items_descriptor;
     }
 
     @java.lang.Override
-    public Stock_Management_Service.NewItemStatus getDefaultInstanceForType() {
-      return Stock_Management_Service.NewItemStatus.getDefaultInstance();
+    public Stock_Management_Service.Items getDefaultInstanceForType() {
+      return Stock_Management_Service.Items.getDefaultInstance();
     }
 
     @java.lang.Override
-    public Stock_Management_Service.NewItemStatus build() {
-      Stock_Management_Service.NewItemStatus result = buildPartial();
+    public Stock_Management_Service.Items build() {
+      Stock_Management_Service.Items result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -468,12 +365,10 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public Stock_Management_Service.NewItemStatus buildPartial() {
-      Stock_Management_Service.NewItemStatus result = new Stock_Management_Service.NewItemStatus(this);
+    public Stock_Management_Service.Items buildPartial() {
+      Stock_Management_Service.Items result = new Stock_Management_Service.Items(this);
       result.itemName_ = itemName_;
-      result.quantity_ = quantity_;
-      result.expiryDate_ = expiryDate_;
-      result.location_ = location_;
+      result.price_ = price_;
       onBuilt();
       return result;
     }
@@ -512,30 +407,22 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof Stock_Management_Service.NewItemStatus) {
-        return mergeFrom((Stock_Management_Service.NewItemStatus)other);
+      if (other instanceof Stock_Management_Service.Items) {
+        return mergeFrom((Stock_Management_Service.Items)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(Stock_Management_Service.NewItemStatus other) {
-      if (other == Stock_Management_Service.NewItemStatus.getDefaultInstance()) return this;
+    public Builder mergeFrom(Stock_Management_Service.Items other) {
+      if (other == Stock_Management_Service.Items.getDefaultInstance()) return this;
       if (!other.getItemName().isEmpty()) {
         itemName_ = other.itemName_;
         onChanged();
       }
-      if (other.getQuantity() != 0) {
-        setQuantity(other.getQuantity());
-      }
-      if (!other.getExpiryDate().isEmpty()) {
-        expiryDate_ = other.expiryDate_;
-        onChanged();
-      }
-      if (!other.getLocation().isEmpty()) {
-        location_ = other.location_;
-        onChanged();
+      if (other.getPrice() != 0D) {
+        setPrice(other.getPrice());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -552,11 +439,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      Stock_Management_Service.NewItemStatus parsedMessage = null;
+      Stock_Management_Service.Items parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (Stock_Management_Service.NewItemStatus) e.getUnfinishedMessage();
+        parsedMessage = (Stock_Management_Service.Items) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -635,166 +522,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int quantity_ ;
+    private double price_ ;
     /**
-     * <code>int32 quantity = 2;</code>
+     * <code>double price = 2;</code>
      */
-    public int getQuantity() {
-      return quantity_;
+    public double getPrice() {
+      return price_;
     }
     /**
-     * <code>int32 quantity = 2;</code>
+     * <code>double price = 2;</code>
      */
-    public Builder setQuantity(int value) {
+    public Builder setPrice(double value) {
       
-      quantity_ = value;
+      price_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 quantity = 2;</code>
+     * <code>double price = 2;</code>
      */
-    public Builder clearQuantity() {
+    public Builder clearPrice() {
       
-      quantity_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object expiryDate_ = "";
-    /**
-     * <code>string expiry_date = 3;</code>
-     */
-    public java.lang.String getExpiryDate() {
-      java.lang.Object ref = expiryDate_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        expiryDate_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string expiry_date = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getExpiryDateBytes() {
-      java.lang.Object ref = expiryDate_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        expiryDate_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string expiry_date = 3;</code>
-     */
-    public Builder setExpiryDate(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      expiryDate_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string expiry_date = 3;</code>
-     */
-    public Builder clearExpiryDate() {
-      
-      expiryDate_ = getDefaultInstance().getExpiryDate();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string expiry_date = 3;</code>
-     */
-    public Builder setExpiryDateBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      expiryDate_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object location_ = "";
-    /**
-     * <code>string location = 4;</code>
-     */
-    public java.lang.String getLocation() {
-      java.lang.Object ref = location_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        location_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string location = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getLocationBytes() {
-      java.lang.Object ref = location_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        location_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string location = 4;</code>
-     */
-    public Builder setLocation(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      location_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string location = 4;</code>
-     */
-    public Builder clearLocation() {
-      
-      location_ = getDefaultInstance().getLocation();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string location = 4;</code>
-     */
-    public Builder setLocationBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      location_ = value;
+      price_ = 0D;
       onChanged();
       return this;
     }
@@ -811,41 +560,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:service1.NewItemStatus)
+    // @@protoc_insertion_point(builder_scope:service1.Items)
   }
 
-  // @@protoc_insertion_point(class_scope:service1.NewItemStatus)
-  private static final Stock_Management_Service.NewItemStatus DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:service1.Items)
+  private static final Stock_Management_Service.Items DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new Stock_Management_Service.NewItemStatus();
+    DEFAULT_INSTANCE = new Stock_Management_Service.Items();
   }
 
-  public static Stock_Management_Service.NewItemStatus getDefaultInstance() {
+  public static Stock_Management_Service.Items getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<NewItemStatus>
-      PARSER = new com.google.protobuf.AbstractParser<NewItemStatus>() {
+  private static final com.google.protobuf.Parser<Items>
+      PARSER = new com.google.protobuf.AbstractParser<Items>() {
     @java.lang.Override
-    public NewItemStatus parsePartialFrom(
+    public Items parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new NewItemStatus(input, extensionRegistry);
+      return new Items(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<NewItemStatus> parser() {
+  public static com.google.protobuf.Parser<Items> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<NewItemStatus> getParserForType() {
+  public com.google.protobuf.Parser<Items> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public Stock_Management_Service.NewItemStatus getDefaultInstanceForType() {
+  public Stock_Management_Service.Items getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
