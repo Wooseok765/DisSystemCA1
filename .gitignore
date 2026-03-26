@@ -2,6 +2,7 @@
 /build/
 /dist/
 /target/
+Generated_Stock_Management_Service/
 
 # NetBeans private files
 /nbproject/private/
