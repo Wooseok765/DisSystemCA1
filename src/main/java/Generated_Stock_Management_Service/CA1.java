@@ -20,11 +20,6 @@ public final class CA1 {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_service1_ItemName_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_service1_Items_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_service1_Items_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_service1_ItemStatus_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -44,16 +39,15 @@ public final class CA1 {
   static {
     java.lang.String[] descriptorData = {
       "\n\017StockMgmt.proto\022\010service1\"\035\n\010ItemName\022" +
-      "\021\n\titem_name\030\001 \001(\t\")\n\005Items\022\021\n\titem_name" +
-      "\030\001 \001(\t\022\r\n\005price\030\002 \001(\001\"X\n\nItemStatus\022\021\n\ti" +
-      "tem_name\030\001 \001(\t\022\020\n\010quantity\030\002 \001(\005\022\023\n\013expi" +
-      "ry_date\030\003 \001(\t\022\020\n\010location\030\004 \001(\t\";\n\nTotal" +
-      "Price\022\031\n\021quantity_of_items\030\001 \001(\005\022\022\n\ntota" +
-      "lPrice\030\002 \001(\0012\177\n\tStockMgmt\0228\n\nStockCheck\022" +
-      "\022.service1.ItemName\032\024.service1.ItemStatu" +
-      "s\"\000\0228\n\013BasketPrice\022\017.service1.Items\032\024.se" +
-      "rvice1.TotalPrice\"\000(\001B+\n\"Generated_Stock" +
-      "_Management_ServiceB\003CA1P\001b\006proto3"
+      "\021\n\titem_name\030\001 \001(\t\"X\n\nItemStatus\022\021\n\titem" +
+      "_name\030\001 \001(\t\022\020\n\010quantity\030\002 \001(\005\022\023\n\013expiry_" +
+      "date\030\003 \001(\t\022\020\n\010location\030\004 \001(\t\";\n\nTotalPri" +
+      "ce\022\031\n\021quantity_of_items\030\001 \001(\005\022\022\n\ntotalPr" +
+      "ice\030\002 \001(\0012\202\001\n\tStockMgmt\0228\n\nStockCheck\022\022." +
+      "service1.ItemName\032\024.service1.ItemStatus\"" +
+      "\000\022;\n\013BasketPrice\022\022.service1.ItemName\032\024.s" +
+      "ervice1.TotalPrice\"\000(\001B+\n\"Generated_Stoc" +
+      "k_Management_ServiceB\003CA1P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -73,20 +67,14 @@ public final class CA1 {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service1_ItemName_descriptor,
         new java.lang.String[] { "ItemName", });
-    internal_static_service1_Items_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_service1_Items_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_service1_Items_descriptor,
-        new java.lang.String[] { "ItemName", "Price", });
     internal_static_service1_ItemStatus_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_service1_ItemStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service1_ItemStatus_descriptor,
         new java.lang.String[] { "ItemName", "Quantity", "ExpiryDate", "Location", });
     internal_static_service1_TotalPrice_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_service1_TotalPrice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service1_TotalPrice_descriptor,

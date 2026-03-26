@@ -59,28 +59,28 @@ public final class StockMgmtGrpc {
      return getStockCheckMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<Generated_Stock_Management_Service.Items,
+  private static volatile io.grpc.MethodDescriptor<Generated_Stock_Management_Service.ItemName,
       Generated_Stock_Management_Service.TotalPrice> getBasketPriceMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "BasketPrice",
-      requestType = Generated_Stock_Management_Service.Items.class,
+      requestType = Generated_Stock_Management_Service.ItemName.class,
       responseType = Generated_Stock_Management_Service.TotalPrice.class,
       methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
-  public static io.grpc.MethodDescriptor<Generated_Stock_Management_Service.Items,
+  public static io.grpc.MethodDescriptor<Generated_Stock_Management_Service.ItemName,
       Generated_Stock_Management_Service.TotalPrice> getBasketPriceMethod() {
-    io.grpc.MethodDescriptor<Generated_Stock_Management_Service.Items, Generated_Stock_Management_Service.TotalPrice> getBasketPriceMethod;
+    io.grpc.MethodDescriptor<Generated_Stock_Management_Service.ItemName, Generated_Stock_Management_Service.TotalPrice> getBasketPriceMethod;
     if ((getBasketPriceMethod = StockMgmtGrpc.getBasketPriceMethod) == null) {
       synchronized (StockMgmtGrpc.class) {
         if ((getBasketPriceMethod = StockMgmtGrpc.getBasketPriceMethod) == null) {
           StockMgmtGrpc.getBasketPriceMethod = getBasketPriceMethod = 
-              io.grpc.MethodDescriptor.<Generated_Stock_Management_Service.Items, Generated_Stock_Management_Service.TotalPrice>newBuilder()
+              io.grpc.MethodDescriptor.<Generated_Stock_Management_Service.ItemName, Generated_Stock_Management_Service.TotalPrice>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
               .setFullMethodName(generateFullMethodName(
                   "service1.StockMgmt", "BasketPrice"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  Generated_Stock_Management_Service.Items.getDefaultInstance()))
+                  Generated_Stock_Management_Service.ItemName.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   Generated_Stock_Management_Service.TotalPrice.getDefaultInstance()))
                   .setSchemaDescriptor(new StockMgmtMethodDescriptorSupplier("BasketPrice"))
@@ -127,7 +127,7 @@ public final class StockMgmtGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.Items> basketPrice(
+    public io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.ItemName> basketPrice(
         io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.TotalPrice> responseObserver) {
       return asyncUnimplementedStreamingCall(getBasketPriceMethod(), responseObserver);
     }
@@ -145,7 +145,7 @@ public final class StockMgmtGrpc {
             getBasketPriceMethod(),
             asyncClientStreamingCall(
               new MethodHandlers<
-                Generated_Stock_Management_Service.Items,
+                Generated_Stock_Management_Service.ItemName,
                 Generated_Stock_Management_Service.TotalPrice>(
                   this, METHODID_BASKET_PRICE)))
           .build();
@@ -180,7 +180,7 @@ public final class StockMgmtGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.Items> basketPrice(
+    public io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.ItemName> basketPrice(
         io.grpc.stub.StreamObserver<Generated_Stock_Management_Service.TotalPrice> responseObserver) {
       return asyncClientStreamingCall(
           getChannel().newCall(getBasketPriceMethod(), getCallOptions()), responseObserver);

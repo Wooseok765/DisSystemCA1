@@ -10,7 +10,7 @@ package service1;
 
 service StockMgmt {   
    rpc StockCheck(ItemName) returns (ItemStatus) {}  
-   rpc BasketPrice(stream Items) returns (TotalPrice){}
+   rpc BasketPrice(stream ItemName) returns (TotalPrice){}
 }
 
    
@@ -18,10 +18,10 @@ service StockMgmt {
      string item_name = 1;
    }
 
-   message Items {
-     string item_name = 1;
-     double price = 2;
-   }
+//   message Items {
+//     string item_name = 1;
+//     double price = 2;
+//   }
    
    message ItemStatus {
      string item_name = 1;

@@ -6,13 +6,13 @@ package distsys.server;
 
 import Generated_Stock_Management_Service.ItemName;
 import Generated_Stock_Management_Service.ItemStatus;
-import Generated_Stock_Management_Service.Items;
 import Generated_Stock_Management_Service.StockMgmtGrpc.StockMgmtImplBase;
 import Generated_Stock_Management_Service.TotalPrice;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,20 +44,65 @@ public class StockMgmtService extends StockMgmtImplBase {
 
         } catch (InterruptedException e) {
             e.printStackTrace(); // Shows where the issue is
-            logger.log(Level.SEVERE, "There is issue with .awaitTermination()");
+            logger.log(Level.SEVERE, "There is issue with .awaitTermination()", e);
 
         } catch (IOException e) {
             e.printStackTrace();
-            logger.log(Level.SEVERE, "Ther is issue with serverBuilder");
+            logger.log(Level.SEVERE, "Ther is issue with serverBuilder", e);
 
         }
+        
 
     }
 
     @Override
-    // Client streaming
-    public StreamObserver<Items> basketPrice(StreamObserver<TotalPrice> responseObserver) {
-        return super.basketPrice(responseObserver); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    // Client streaming 
+    public StreamObserver<ItemName> basketPrice(StreamObserver<TotalPrice> responseObserver) {
+        return new StreamObserver<ItemName>() {
+            ArrayList<Double> list = new ArrayList<>();
+
+            int quantityOfItems = 0;
+
+            public void onNext(ItemName request) {
+
+                String requestedItem = request.getItemName();
+                if (stockMap.containsKey(requestedItem)) {
+                    double priceOfItem = stockMap.getItemStatus(requestedItem).getPrice();
+                    list.add(priceOfItem);
+                    quantityOfItems = quantityOfItems + 1;
+                    System.out.println("Price information registered: " + requestedItem + "(" + priceOfItem + ")");
+                } else {
+                    return;
+                }
+
+            }
+
+            public void onError(Throwable t) {
+                logger.log(Level.SEVERE, "Issue occurs in basketPrice()", t);
+                System.out.println("Issue occurs in basketPrice()");
+
+            }
+
+            public void onCompleted() {
+                double tempPrice = 0.0;
+                for (double p : list) {
+
+                    tempPrice = tempPrice + p;
+
+                }
+                TotalPrice result = TotalPrice.newBuilder()
+                        .setQuantityOfItems(quantityOfItems)
+                        .setTotalPrice(tempPrice)
+                        .build();
+
+                responseObserver.onNext(result);
+                // Send back a response to client
+
+                responseObserver.onCompleted();
+
+            }
+
+        };
     }
 
     @Override
@@ -65,7 +110,7 @@ public class StockMgmtService extends StockMgmtImplBase {
     public void stockCheck(ItemName request, StreamObserver<ItemStatus> responseObserver) {
         String requestedItemName = request.getItemName();
         System.out.println("Server received request: " + requestedItemName + "\n");
-        
+
         if (stockMap.containsKey(requestedItemName)) {
             StockMap.Item item = stockMap.getItemStatus(requestedItemName); // looks up item by stockMap object and assign it
             ItemStatus statusOfRequestedItem = ItemStatus.newBuilder()
@@ -78,7 +123,6 @@ public class StockMgmtService extends StockMgmtImplBase {
             responseObserver.onCompleted();
             System.out.println("Server executed onCompleted");
         } else {
-            StockMap.Item item = stockMap.getItemStatus(requestedItemName); // looks up item by stockMap object and assign it
             ItemStatus statusOfRequestedItem = ItemStatus.newBuilder()
                     .setItemName(requestedItemName)
                     .setQuantity(0)
@@ -86,7 +130,7 @@ public class StockMgmtService extends StockMgmtImplBase {
                     .setLocation("Not in stock").build();
             responseObserver.onNext(statusOfRequestedItem);
             responseObserver.onCompleted();
-            
+
         }
     }
 }
