@@ -40,6 +40,10 @@ public class StockMgmtService extends StockMgmtImplBase {
                     .start();
             logger.info("Server started, listening on " + port);
             System.out.println("***** Server started, listening on" + port);
+            
+            ServiceRegistration register = ServiceRegistration.getInstance(); // Create ServiceRegistration object so that the methods in it can be used
+            register.registerService("_grpc._tcp.local.", "Stock management", port, "service=StockMgmtService"); // Register an location information of the service on the network
+            
             server.awaitTermination();
 
         } catch (InterruptedException e) {

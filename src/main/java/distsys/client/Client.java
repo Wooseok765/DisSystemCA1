@@ -26,10 +26,22 @@ public class Client {
     private static StockMgmtBlockingStub blockingStub; // For using several time from diverse method
     private static StockMgmtGrpc.StockMgmtStub non_blockingStub;
 
-    public static void main(String[] args) {
-        int port = 1234;
+    public static void main(String[] args) throws InterruptedException {
+        int port;
+        String host;
+        ServiceDiscovery discovery = new ServiceDiscovery("_grpc._tcp.local.", "Stock management"); // Looking up the service by discovery object
+        discovery.discoverService(5000);
+
+        port = discovery.getPort();
+        host = discovery.getHost();
+
+        if (host == null || port == 0) {
+            System.out.println("Service not found.");
+            return;
+        } // if there are no service, the error message will be occured
+
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", port)
+                .forAddress(host, port)
                 .usePlaintext()
                 .build();
 
@@ -38,7 +50,6 @@ public class Client {
 
         non_blockingStub = newStub(channel);
         getTotalBasketPrice();
-        
 
     }
 
@@ -75,7 +86,6 @@ public class Client {
         // Execute basketPrice() with arguement(totalPrice)
         // then it gets back return value from basketPrice() which is total price
         // StreamObserver<ItemName> type
-        
 
         try {
             itemName.onNext(ItemName.newBuilder().setItemName("Apple").build());
