@@ -5,11 +5,14 @@
 package distsys.client;
 
 import Generated_Stock_Management_Service.ItemName;
-import Generated_Stock_Management_Service.ItemStatus;
+import Generated_Stock_Monitor_Service.ItemStatus;
 import Generated_Stock_Management_Service.StockMgmtGrpc;
 import static Generated_Stock_Management_Service.StockMgmtGrpc.newBlockingStub;
 import static Generated_Stock_Management_Service.StockMgmtGrpc.newStub;
 import Generated_Stock_Management_Service.TotalPrice;
+import Generated_Stock_Monitor_Service.Empty;
+import Generated_Stock_Monitor_Service.SoldItem;
+import Generated_Stock_Monitor_Service.StockMonitorGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -22,10 +25,13 @@ import java.util.logging.Level;
 public class GUIDemo extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GUIDemo.class.getName());
-    private static StockMgmtGrpc.StockMgmtBlockingStub blockingStub;
-    private static StockMgmtGrpc.StockMgmtStub non_blockingStub;
+    private static StockMgmtGrpc.StockMgmtBlockingStub blockingStub; // for StockMgmtService
+    private static StockMgmtGrpc.StockMgmtStub non_blockingStub; // for StockMgmtService
+    private static StockMonitorGrpc.StockMonitorStub stockMonitorNon_blockingStub; // for stockMonitorService
     private StreamObserver<ItemName> itemName;
     private StreamObserver<TotalPrice> totalPrice;
+    private StreamObserver<SoldItem> soldItem;
+    private StreamObserver<ItemStatus> itemStatus;
 
     /**
      * Creates new form GUIDemo
@@ -58,7 +64,6 @@ public class GUIDemo extends javax.swing.JFrame {
         ProductsInTheCardLabel = new javax.swing.JLabel();
         TotalPriceLabel = new javax.swing.JLabel();
         ProductNameTextField = new javax.swing.JTextField();
-        ProductsInTheCartTextField = new javax.swing.JTextField();
         ProductCheckButton = new javax.swing.JButton();
         StackProductButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,14 +76,28 @@ public class GUIDemo extends javax.swing.JFrame {
         NumOfProductLabel = new javax.swing.JLabel();
         NumOfProductTextField = new javax.swing.JTextField();
         CheckPriceButton = new javax.swing.JButton();
+        SoldItemLabel = new javax.swing.JLabel();
+        SoldButton = new javax.swing.JButton();
+        StatusOfSoldItemLabel = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        StatusOfSoldItemTextArea = new javax.swing.JTextArea();
+        ProductsInTheCartTextField = new javax.swing.JTextField();
+        SoldItemTextField = new javax.swing.JTextField();
+        ExpiredItemCheckButton = new javax.swing.JButton();
+        ExpiredItemLabel = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        ExpiredItemTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Stock Management");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Stock Management Service");
 
-        StockMonitoringLabel.setText("Stock Monitoring");
+        StockMonitoringLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        StockMonitoringLabel.setText("Stock Monitoring Service");
 
-        CustomerMonitoringLabel.setText("Customer Monitoring");
+        CustomerMonitoringLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        CustomerMonitoringLabel.setText("Customer Monitoring Service");
 
         ProductNameLabel.setText("Product Name");
 
@@ -87,12 +106,6 @@ public class GUIDemo extends javax.swing.JFrame {
         ProductsInTheCardLabel.setText("Products in the cart");
 
         TotalPriceLabel.setText("Total Price");
-
-        ProductsInTheCartTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProductsInTheCartTextFieldActionPerformed(evt);
-            }
-        });
 
         ProductCheckButton.setText("Product Check");
         ProductCheckButton.addActionListener(new java.awt.event.ActionListener() {
@@ -131,96 +144,160 @@ public class GUIDemo extends javax.swing.JFrame {
             }
         });
 
+        SoldItemLabel.setText("Sold Item");
+
+        SoldButton.setText("Sold");
+        SoldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SoldButtonActionPerformed(evt);
+            }
+        });
+
+        StatusOfSoldItemLabel.setText("Current Stock Status");
+
+        StatusOfSoldItemTextArea.setColumns(20);
+        StatusOfSoldItemTextArea.setRows(5);
+        jScrollPane4.setViewportView(StatusOfSoldItemTextArea);
+
+        ExpiredItemCheckButton.setText("Check");
+        ExpiredItemCheckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExpiredItemCheckButtonActionPerformed(evt);
+            }
+        });
+
+        ExpiredItemLabel.setText("Expired Item");
+
+        ExpiredItemTextArea.setColumns(20);
+        ExpiredItemTextArea.setRows(5);
+        jScrollPane5.setViewportView(ExpiredItemTextArea);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ProductNameLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ProductCheckButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(ProductsInTheCardLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ProductsInTheCartTextField)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CheckPriceButton)
-                            .addComponent(StackProductButton))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(ProductStatusLabel)
-                        .addGap(112, 112, 112)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(NumOfProductLabel)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2)
-                            .addComponent(NumOfProductTextField))))
-                .addGap(336, 336, 336))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(StockMonitoringLabel))
-                    .addComponent(CustomerMonitoringLabel)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(InformationLabel)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(476, 476, 476)
-                        .addComponent(TotalPriceLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(ProductNameLabel)
+                                                .addComponent(jLabel1))
+                                            .addGap(53, 53, 53)
+                                            .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(ProductsInTheCardLabel)
+                                            .addGap(27, 27, 27)
+                                            .addComponent(ProductsInTheCartTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(34, 34, 34)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(SoldItemLabel)
+                                        .addComponent(ExpiredItemLabel))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(ExpiredItemCheckButton)
+                                        .addComponent(SoldItemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(CustomerMonitoringLabel)))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ProductCheckButton)
+                                    .addComponent(StackProductButton)
+                                    .addComponent(CheckPriceButton)
+                                    .addComponent(SoldButton))
+                                .addGap(66, 66, 66)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(TotalPriceLabel)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(NumOfProductLabel)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(NumOfProductTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(ProductStatusLabel)
+                                            .addGap(65, 65, 65)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(StatusOfSoldItemLabel)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(39, 39, 39)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ProductStatusLabel)
-                            .addComponent(ProductCheckButton)
+                            .addComponent(ProductNameLabel)
                             .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ProductNameLabel))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(127, 127, 127)
-                                .addComponent(TotalPriceLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(StackProductButton)
-                                    .addComponent(ProductsInTheCartTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ProductsInTheCardLabel)
-                                    .addComponent(NumOfProductLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CheckPriceButton)))
-                        .addGap(34, 34, 34))
+                            .addComponent(ProductCheckButton)
+                            .addComponent(ProductStatusLabel)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addComponent(NumOfProductTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ProductsInTheCardLabel)
+                            .addComponent(ProductsInTheCartTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(StackProductButton)
+                            .addComponent(NumOfProductLabel)
+                            .addComponent(NumOfProductTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CheckPriceButton)
+                        .addComponent(TotalPriceLabel))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addComponent(StockMonitoringLabel)
-                .addGap(234, 234, 234)
-                .addComponent(CustomerMonitoringLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(SoldItemLabel)
+                        .addComponent(SoldItemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(SoldButton)
+                        .addComponent(StatusOfSoldItemLabel))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ExpiredItemCheckButton)
+                            .addComponent(ExpiredItemLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addComponent(CustomerMonitoringLabel)
+                        .addGap(99, 99, 99))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(InformationLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,12 +306,6 @@ public class GUIDemo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ProductsInTheCartTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductsInTheCartTextFieldActionPerformed
-        // nothing
-
-
-    }//GEN-LAST:event_ProductsInTheCartTextFieldActionPerformed
 
     private void ProductCheckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductCheckButtonActionPerformed
         if (blockingStub == null) {
@@ -251,8 +322,8 @@ public class GUIDemo extends javax.swing.JFrame {
 
         try {
             ItemName request = ItemName.newBuilder().setItemName(itemName).build();
-            ItemStatus itemStatus = blockingStub.stockCheck(request);
-            ProductStatusTextArea.setText(itemStatus.toString());
+            Generated_Stock_Management_Service.ItemStatus status = blockingStub.stockCheck(request);
+            ProductStatusTextArea.setText(status.toString());
         } catch (Exception e) {
             InformationTextArea.setText("Error occured while executing stockChek service");
             logger.log(Level.SEVERE, "Error occured while executing stockChek service");
@@ -274,8 +345,8 @@ public class GUIDemo extends javax.swing.JFrame {
         }
 
         try {
-            itemName.onNext(ItemName.newBuilder().setItemName(productName).build());
-            
+            ItemName newItem = ItemName.newBuilder().setItemName(productName).build();
+            itemName.onNext(newItem);
 
         } catch (Exception e) {
             InformationTextArea.setText("Error while stacking product");
@@ -293,7 +364,7 @@ public class GUIDemo extends javax.swing.JFrame {
         }
         try {
             itemName.onCompleted();
-            
+
             InformationTextArea.setText("Total price calculation completed");
         } catch (Exception e) {
             InformationTextArea.setText("Error occured in CheckPriceButtonActionPerformed()");
@@ -304,10 +375,66 @@ public class GUIDemo extends javax.swing.JFrame {
 
     }//GEN-LAST:event_CheckPriceButtonActionPerformed
 
+    private void SoldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SoldButtonActionPerformed
+        if (soldItem == null) {
+            return;
+        }
+
+        String soldItemName = SoldItemTextField.getText().trim();
+
+        if (soldItemName.isEmpty()) {
+            return;
+        }
+
+        try {
+            SoldItem request = SoldItem.newBuilder()
+                    .setItemName(soldItemName)
+                    .build();
+
+            soldItem.onNext(request);
+
+            InformationTextArea.setText("Sold item request sent: " + soldItemName);
+
+        } catch (Exception e) {
+            InformationTextArea.setText("Error while sending sold item request");
+            logger.log(Level.SEVERE, "Error while sending sold item request", e);
+        } finally {
+            SoldItemTextField.setText("");
+        }
+
+
+    }//GEN-LAST:event_SoldButtonActionPerformed
+
+    private void ExpiredItemCheckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExpiredItemCheckButtonActionPerformed
+        ExpiredItemTextArea.setText(" ");
+        Empty request = Empty.newBuilder().build();
+        StreamObserver<ItemStatus> response = new StreamObserver<ItemStatus>() {
+            public void onNext(ItemStatus status) {
+                ExpiredItemTextArea.append(status.toString() + "\n\n");
+
+            }
+
+            public void onError(Throwable t) {
+                logger.log(Level.SEVERE, "Issue occurs in ExpiredItemCheckButton()", t);
+                InformationTextArea.setText("Issue occurs in ExpiredItemCheckButton()");
+
+            }
+
+            public void onCompleted() {
+                InformationTextArea.setText("Expired item check completed");
+
+            }
+        };
+        stockMonitorNon_blockingStub.expiryDate(request, response);
+
+
+    }//GEN-LAST:event_ExpiredItemCheckButtonActionPerformed
+
     private void startService() throws InterruptedException {
         int port;
         String host;
-        ServiceDiscovery discovery = new ServiceDiscovery("_grpc._tcp.local.", "Stock management"); // Looking up the service by discovery object
+        ServiceDiscovery discovery = new ServiceDiscovery("_grpc._tcp.local.", "Server main");
+        // Looking up the service name. All the services are registered by one name(Server main)
         discovery.discoverService(5000);
 
         port = discovery.getPort();
@@ -323,20 +450,23 @@ public class GUIDemo extends javax.swing.JFrame {
                 .usePlaintext()
                 .build();
 
-        blockingStub = newBlockingStub(channel);
-        non_blockingStub = newStub(channel);
+        blockingStub = newBlockingStub(channel); // for StockMgmtService
+        non_blockingStub = newStub(channel); // for StockMgmtService
+        stockMonitorNon_blockingStub = StockMonitorGrpc.newStub(channel); // for StockMonitorService
 
+        /* For client streaming method: basckePrice()*/
         totalPrice = new StreamObserver<TotalPrice>() {
 
             public void onNext(TotalPrice p) {
+                // It is executed only once when the CheckPriceButtonActionPerformed()is activated
                 TotalPriceTextArea.setText(String.valueOf(p.getTotalPrice()));
                 NumOfProductTextField.setText(String.valueOf(p.getQuantityOfItems()));
 
             }
 
             public void onError(Throwable t) {
-                logger.log(Level.SEVERE, "Issue occurs in getTotalBasketPrkce()", t);
-                InformationTextArea.setText("Issue occurs in getTotalBasketPrkce()");
+                logger.log(Level.SEVERE, "Issue occurs in basketPrkce()", t);
+                InformationTextArea.setText("Issue occurs basketPrkce()");
             }
 
             public void onCompleted() {
@@ -346,6 +476,27 @@ public class GUIDemo extends javax.swing.JFrame {
             }
         };
         itemName = non_blockingStub.basketPrice(totalPrice);
+        /*-------------------------------------------------*/
+
+ /*For bidirectional streaming: autoStockCheck()*/
+        itemStatus = new StreamObserver<ItemStatus>() {
+
+            public void onNext(ItemStatus item) {
+                StatusOfSoldItemTextArea.setText(item.toString());
+            }
+
+            public void onError(Throwable t) {
+                logger.log(Level.SEVERE, "Issue occurs in autoStockCheck()", t);
+                InformationTextArea.setText("Issue occurs autoStockCheck()");
+
+            }
+
+            public void onCompleted() {
+                InformationTextArea.setText("Stock status is updated");
+            }
+        };
+        soldItem = stockMonitorNon_blockingStub.autoStockCheck(itemStatus);
+        /*-------------------------------------------------*/
 
         InformationTextArea.setText("Connected\nHost: " + host + "\nPort: " + port);
     }
@@ -378,6 +529,9 @@ public class GUIDemo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CheckPriceButton;
     private javax.swing.JLabel CustomerMonitoringLabel;
+    private javax.swing.JButton ExpiredItemCheckButton;
+    private javax.swing.JLabel ExpiredItemLabel;
+    private javax.swing.JTextArea ExpiredItemTextArea;
     private javax.swing.JLabel InformationLabel;
     private javax.swing.JTextArea InformationTextArea;
     private javax.swing.JLabel NumOfProductLabel;
@@ -389,7 +543,12 @@ public class GUIDemo extends javax.swing.JFrame {
     private javax.swing.JTextArea ProductStatusTextArea;
     private javax.swing.JLabel ProductsInTheCardLabel;
     private javax.swing.JTextField ProductsInTheCartTextField;
+    private javax.swing.JButton SoldButton;
+    private javax.swing.JLabel SoldItemLabel;
+    private javax.swing.JTextField SoldItemTextField;
     private javax.swing.JButton StackProductButton;
+    private javax.swing.JLabel StatusOfSoldItemLabel;
+    private javax.swing.JTextArea StatusOfSoldItemTextArea;
     private javax.swing.JLabel StockMonitoringLabel;
     private javax.swing.JLabel TotalPriceLabel;
     private javax.swing.JTextArea TotalPriceTextArea;
@@ -397,5 +556,7 @@ public class GUIDemo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 }

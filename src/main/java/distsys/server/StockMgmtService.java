@@ -24,39 +24,10 @@ public class StockMgmtService extends StockMgmtImplBase {
 
     private static final Logger logger = Logger.getLogger(StockMgmtService.class.getName());
 
-    private static StockMap stockMap;
+    private StockMap stockMap;
 
-    public static void main(String[] args) {
-        stockMap = new StockMap();
-
-        StockMgmtService stockMgm = new StockMgmtService();
-
-        int port = 1234;
-
-        try {
-            Server server = ServerBuilder.forPort(port)
-                    .addService(stockMgm)
-                    .build()
-                    .start();
-            logger.info("Server started, listening on " + port);
-            System.out.println("***** Server started, listening on" + port);
-            
-            ServiceRegistration register = ServiceRegistration.getInstance(); // Create ServiceRegistration object so that the methods in it can be used
-            register.registerService("_grpc._tcp.local.", "Stock management", port, "service=StockMgmtService"); // Register an location information of the service on the network
-            
-            server.awaitTermination();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace(); // Shows where the issue is
-            logger.log(Level.SEVERE, "There is issue with .awaitTermination()", e);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.log(Level.SEVERE, "Ther is issue with serverBuilder", e);
-
-        }
-        
-
+    public StockMgmtService(StockMap stockMap) {
+        this.stockMap = stockMap;
     }
 
     @Override

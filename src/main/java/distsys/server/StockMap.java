@@ -4,6 +4,8 @@
  */
 package distsys.server;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,16 +64,15 @@ public class StockMap {
         public void setLocation(String location) {
             this.location = location;
         }
-        
-        public String toString(){
+
+        public String toString() {
             return "Item: " + name
                     + "\nPrice: " + price
                     + "\nQuantity: " + quantity
                     + "\nExprity Date: " + expiry_date
                     + "\nLocation: " + location;
         }
-        
-        
+
     }
 
     Map stockMap;
@@ -107,20 +108,53 @@ public class StockMap {
         strawberry.expiry_date = "15-04-2026";
         strawberry.location = "Fruit";
 
+        Item cuccumber = new Item();
+        cuccumber.name = "Cuccumber";
+        cuccumber.price = 1.00;
+        cuccumber.quantity = 10;
+        cuccumber.expiry_date = "31-03-2026";
+        cuccumber.location = "Vegetable";
+
+        Item eggplant = new Item();
+        eggplant.name = "Eggplant";
+        eggplant.price = 0.50;
+        eggplant.quantity = 10;
+        eggplant.expiry_date = "30-03-2026";
+        eggplant.location = "Vegetable";
+
         stockMap.put("Apple", apple);
         stockMap.put("Banana", banana);
         stockMap.put("Kiwi", kiwi);
         stockMap.put("Strawberry", strawberry);
+        stockMap.put("Cuccumber", cuccumber);
+        stockMap.put("Eggplant", eggplant);
 
     }
 
-    public Item getItemStatus(String name){
+    public Item getItemStatus(String name) {
         Item answer = (Item) stockMap.get(name);
         return answer;
     }
-    
-    public boolean containsKey(String a){
+
+    public boolean containsKey(String a) {
         return stockMap.containsKey(a);
+    }
+
+    public List<Item> getExpiredItem() {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dateForm = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        List<Item> expiredItemList = new ArrayList<>();
+        for (Object obj : stockMap.values()) {
+            Item item = (Item) obj;
+
+            LocalDate expiryDate = LocalDate.parse(item.getExpiry_date(), dateForm);
+
+            if (expiryDate.isBefore(today)) {
+                expiredItemList.add(item);
+            }
+        }
+        return expiredItemList;
     }
 
 }
