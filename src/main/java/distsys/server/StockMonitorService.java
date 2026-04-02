@@ -29,9 +29,11 @@ public class StockMonitorService extends StockMonitorImplBase {
 
     @Override
     // Bidirectional streaming
+    // It will be executed when user press the button and sent ItemStatus type data to GUI
     public StreamObserver<SoldItem> autoStockCheck(StreamObserver<ItemStatus> responseObserver) {
         return new StreamObserver<SoldItem>() {
 
+            @Override
             public void onNext(SoldItem item) {
                 String requestedItem = item.getItemName();
                 if (stockMap.containsKey(requestedItem)) { // If there are required item in stock
@@ -44,16 +46,18 @@ public class StockMonitorService extends StockMonitorImplBase {
                                 .setExpiryDate("Not Found")
                                 .setLocation("Not in stock").build();
                         responseObserver.onNext(response);
-                        return;
+                        
                     } else { // Decrease the item quantity
                         itemInfo.setQuantity(numItem - 1);
                         ItemStatus response = ItemStatus.newBuilder()
                                 .setQuantity(itemInfo.getQuantity())
                                 .setItemName(itemInfo.getName())
-                                .setExpiryDate(itemInfo.getLocation())
+                                .setExpiryDate(itemInfo.getExpiry_date())
                                 .setLocation(itemInfo.getLocation())
                                 .build();
                         responseObserver.onNext(response);
+                        // The changed value is sent to client(itemStatus)
+                        // and The value is displyed on StatusOfSoldItemTextArea
 
                     }
 
@@ -64,16 +68,18 @@ public class StockMonitorService extends StockMonitorImplBase {
                             .setExpiryDate("Not Found")
                             .setLocation("Not in stock").build();
                     responseObserver.onNext(response);
-                    return;
+                    
                 }
             }
 
+            @Override
             public void onError(Throwable t) {
                 System.out.println("Error occurred: " + t.getMessage());
                 logger.log(Level.SEVERE, "Error occurred: " + t);
 
             }
 
+            @Override
             public void onCompleted() {
                 responseObserver.onCompleted();
 

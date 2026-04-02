@@ -4,6 +4,9 @@
  */
 package distsys.client;
 
+import Generated_NumberOfCustomer_Service.CurrentCustomer;
+import Generated_NumberOfCustomer_Service.Location;
+import Generated_NumberOfCustomer_Service.NumberOfCustomerGrpc;
 import Generated_Stock_Management_Service.ItemName;
 import Generated_Stock_Monitor_Service.ItemStatus;
 import Generated_Stock_Management_Service.StockMgmtGrpc;
@@ -28,10 +31,13 @@ public class GUIDemo extends javax.swing.JFrame {
     private static StockMgmtGrpc.StockMgmtBlockingStub blockingStub; // for StockMgmtService
     private static StockMgmtGrpc.StockMgmtStub non_blockingStub; // for StockMgmtService
     private static StockMonitorGrpc.StockMonitorStub stockMonitorNon_blockingStub; // for stockMonitorService
+    private static NumberOfCustomerGrpc.NumberOfCustomerStub NumOfCustomerStub;
     private StreamObserver<ItemName> itemName;
     private StreamObserver<TotalPrice> totalPrice;
     private StreamObserver<SoldItem> soldItem;
     private StreamObserver<ItemStatus> itemStatus;
+    private StreamObserver<CurrentCustomer> responseCustomer;
+    private StreamObserver<Location> locationRequest;
 
     /**
      * Creates new form GUIDemo
@@ -87,6 +93,11 @@ public class GUIDemo extends javax.swing.JFrame {
         ExpiredItemLabel = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         ExpiredItemTextArea = new javax.swing.JTextArea();
+        CurrentNumCutomerLabel = new javax.swing.JLabel();
+        CheckButton = new javax.swing.JButton();
+        LocationTextField = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        CurrentNumCustomerTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,6 +183,19 @@ public class GUIDemo extends javax.swing.JFrame {
         ExpiredItemTextArea.setRows(5);
         jScrollPane5.setViewportView(ExpiredItemTextArea);
 
+        CurrentNumCutomerLabel.setText("Current Number Of Customers");
+
+        CheckButton.setText("check");
+        CheckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckButtonActionPerformed(evt);
+            }
+        });
+
+        CurrentNumCustomerTextArea.setColumns(20);
+        CurrentNumCustomerTextArea.setRows(5);
+        jScrollPane6.setViewportView(CurrentNumCustomerTextArea);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,35 +211,44 @@ public class GUIDemo extends javax.swing.JFrame {
                             .addComponent(InformationLabel)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(ProductNameLabel)
-                                                .addComponent(jLabel1))
-                                            .addGap(53, 53, 53)
-                                            .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(ProductsInTheCardLabel)
-                                            .addGap(27, 27, 27)
-                                            .addComponent(ProductsInTheCartTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(34, 34, 34)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(SoldItemLabel)
-                                        .addComponent(ExpiredItemLabel))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ExpiredItemCheckButton)
-                                        .addComponent(SoldItemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(ProductNameLabel)
+                                            .addComponent(jLabel1))
+                                        .addGap(53, 53, 53)
+                                        .addComponent(ProductNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(ProductsInTheCardLabel)
+                                        .addGap(27, 27, 27)
+                                        .addComponent(ProductsInTheCartTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(SoldItemLabel)
+                                    .addComponent(ExpiredItemLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ExpiredItemCheckButton)
+                                    .addComponent(SoldItemTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(CustomerMonitoringLabel)))
+                                .addComponent(CustomerMonitoringLabel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(CurrentNumCutomerLabel)
+                                .addGap(27, 27, 27)
+                                .addComponent(LocationTextField)))
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(CheckButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(ProductCheckButton)
@@ -240,8 +273,7 @@ public class GUIDemo extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(StatusOfSoldItemLabel)
                                         .addGap(35, 35, 35)
-                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(367, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -292,11 +324,22 @@ public class GUIDemo extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ExpiredItemCheckButton)
                             .addComponent(ExpiredItemLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                         .addComponent(CustomerMonitoringLabel)
-                        .addGap(99, 99, 99))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CurrentNumCutomerLabel)
+                            .addComponent(LocationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(66, 66, 66))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(CheckButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(InformationLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -377,6 +420,7 @@ public class GUIDemo extends javax.swing.JFrame {
 
     private void SoldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SoldButtonActionPerformed
         if (soldItem == null) {
+            // if it is null, that means the connection with server isn't generated
             return;
         }
 
@@ -392,6 +436,9 @@ public class GUIDemo extends javax.swing.JFrame {
                     .build();
 
             soldItem.onNext(request);
+            // it will activate autoStockCheck() method in server
+            // it sends a request which has one field(item_name) to server when the button is clicked
+            // After this, the server's reply will be sent to itemStatus
 
             InformationTextArea.setText("Sold item request sent: " + soldItemName);
 
@@ -430,6 +477,30 @@ public class GUIDemo extends javax.swing.JFrame {
 
     }//GEN-LAST:event_ExpiredItemCheckButtonActionPerformed
 
+    private void CheckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckButtonActionPerformed
+        if (locationRequest == null) {
+            return;
+        }
+        String place = LocationTextField.getText().trim();
+        
+        if(place.isEmpty()){
+            return;
+        }
+
+        try {
+            Location request = Location.newBuilder()
+                                .setLocation(place)
+                                .build();
+            
+            locationRequest.onNext(request);
+        }
+        catch(Exception e){
+            logger.log(Level.SEVERE, "Error occurs at CheckButtonActionPerformed()", e);
+            InformationTextArea.setText("Error occurs at CheckButtonActionPerformed()");
+            
+        }
+    }//GEN-LAST:event_CheckButtonActionPerformed
+
     private void startService() throws InterruptedException {
         int port;
         String host;
@@ -453,6 +524,7 @@ public class GUIDemo extends javax.swing.JFrame {
         blockingStub = newBlockingStub(channel); // for StockMgmtService
         non_blockingStub = newStub(channel); // for StockMgmtService
         stockMonitorNon_blockingStub = StockMonitorGrpc.newStub(channel); // for StockMonitorService
+        NumOfCustomerStub = Generated_NumberOfCustomer_Service.NumberOfCustomerGrpc.newStub(channel);
 
         /* For client streaming method: basckePrice()*/
         totalPrice = new StreamObserver<TotalPrice>() {
@@ -478,12 +550,13 @@ public class GUIDemo extends javax.swing.JFrame {
         itemName = non_blockingStub.basketPrice(totalPrice);
         /*-------------------------------------------------*/
 
- /*For bidirectional streaming: autoStockCheck()*/
+ /*For bidirectional streaming: autoStockCheck() and SoldButtonActionPerformed()*/
+        // create StreamObserver (path for receiving answer from server)
         itemStatus = new StreamObserver<ItemStatus>() {
 
             public void onNext(ItemStatus item) {
                 StatusOfSoldItemTextArea.setText(item.toString());
-            }
+            } // It will be executed when the server send reply
 
             public void onError(Throwable t) {
                 logger.log(Level.SEVERE, "Issue occurs in autoStockCheck()", t);
@@ -495,8 +568,30 @@ public class GUIDemo extends javax.swing.JFrame {
                 InformationTextArea.setText("Stock status is updated");
             }
         };
+
         soldItem = stockMonitorNon_blockingStub.autoStockCheck(itemStatus);
+        // Connect with server
+        // the argument(itemStatus) configures the path that the reply comes through
+        // the return value is StreamObserver<ItemaName> type that same as 'soldItem'
         /*-------------------------------------------------*/
+
+ /*For bidirectional streaming: checkNumOfCustomer() and CheckButtonActionPerformed()*/
+        responseCustomer = new StreamObserver<CurrentCustomer>() {
+            public void onNext(CurrentCustomer c) {
+                CurrentNumCustomerTextArea.setText("Section: " + c.getLocation() + "\n\nCurrent customer: " + c.getCurrentNum());
+            }
+
+            public void onError(Throwable t) {
+                logger.log(Level.SEVERE, "Error occurs at CheckButtonActionPerformed()");
+                InformationTextArea.setText("Error occurs at CheckButtonActionPerformed()");
+            }
+
+            public void onCompleted() {
+                InformationTextArea.setText("Current number of customers updated");
+            }
+
+        };
+        locationRequest = NumOfCustomerStub.checkNumOfCustomer(responseCustomer);
 
         InformationTextArea.setText("Connected\nHost: " + host + "\nPort: " + port);
     }
@@ -527,13 +622,17 @@ public class GUIDemo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CheckButton;
     private javax.swing.JButton CheckPriceButton;
+    private javax.swing.JTextArea CurrentNumCustomerTextArea;
+    private javax.swing.JLabel CurrentNumCutomerLabel;
     private javax.swing.JLabel CustomerMonitoringLabel;
     private javax.swing.JButton ExpiredItemCheckButton;
     private javax.swing.JLabel ExpiredItemLabel;
     private javax.swing.JTextArea ExpiredItemTextArea;
     private javax.swing.JLabel InformationLabel;
     private javax.swing.JTextArea InformationTextArea;
+    private javax.swing.JTextField LocationTextField;
     private javax.swing.JLabel NumOfProductLabel;
     private javax.swing.JTextField NumOfProductTextField;
     private javax.swing.JButton ProductCheckButton;
@@ -558,5 +657,6 @@ public class GUIDemo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     // End of variables declaration//GEN-END:variables
 }

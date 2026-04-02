@@ -1,0 +1,33 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "Generated_NumberOfCustomer_Service";
+option java_outer_classname = "CA1";
+
+package service3;
+
+
+
+service NumberOfCustomer {   
+   rpc CheckNumOfCustomer(stream Location) returns (stream CurrentCustomer) {}  
+   
+}
+   
+
+    message Location {
+    string location = 1;
+   }
+   
+   message CurrentCustomer {
+     string location = 1;
+     int32 currentNum = 2;
+     
+   }
+
+    
+ 
+   
+
+
+

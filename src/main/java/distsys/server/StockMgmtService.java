@@ -8,10 +8,7 @@ import Generated_Stock_Management_Service.ItemName;
 import Generated_Stock_Management_Service.ItemStatus;
 import Generated_Stock_Management_Service.StockMgmtGrpc.StockMgmtImplBase;
 import Generated_Stock_Management_Service.TotalPrice;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +35,7 @@ public class StockMgmtService extends StockMgmtImplBase {
 
             int quantityOfItems = 0;
 
+            @Override
             public void onNext(ItemName request) {
 
                 String requestedItem = request.getItemName();
@@ -46,18 +44,18 @@ public class StockMgmtService extends StockMgmtImplBase {
                     list.add(priceOfItem);
                     quantityOfItems = quantityOfItems + 1;
                     System.out.println("Price information registered: " + requestedItem + "(" + priceOfItem + ")");
-                } else {
-                    return;
-                }
+                } 
 
             }
 
+            @Override
             public void onError(Throwable t) {
                 logger.log(Level.SEVERE, "Issue occurs in basketPrice()", t);
                 System.out.println("Issue occurs in basketPrice()");
 
             }
 
+            @Override
             public void onCompleted() {
                 double tempPrice = 0.0;
                 for (double p : list) {

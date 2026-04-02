@@ -24,11 +24,14 @@ public class ServerMain {
         
         StockMgmtService stockMgm = new StockMgmtService(stockMap);
         StockMonitorService stockMonitor = new StockMonitorService(stockMap);
+        NumberOfCustomerService numCustomer = new NumberOfCustomerService();
+        
         
         try {
             Server server = ServerBuilder.forPort(port)
                     .addService(stockMgm)
                     .addService(stockMonitor)
+                    .addService(numCustomer)
                     .build()
                     .start();
             logger.info("Server started, listening on " + port);
